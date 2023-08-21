@@ -12,8 +12,8 @@ function Book(title, author, pages, read) {
 
 }
 
-function addBookToLibrary(title, author, pages, read) {
-    myLibrary.push(new Book(title, author, pages, read));
+function addBookToLibrary(book) {
+    myLibrary.push(new Book(book));
 }
 
 const modal = document.querySelector("dialog");
@@ -49,6 +49,18 @@ const createBookCard = (book) => {
     readText.textContent = book.read
     bookCard.appendChild(readText);
 
+    let deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    
+    deleteBtn.addEventListener("click", () => {
+        bookDisplay.removeChild(bookCard);
+        
+    })
+    
+    bookCard.appendChild(deleteBtn)
+
+
+
     bookDisplay.appendChild(bookCard);
 }
 
@@ -60,19 +72,21 @@ const insertBookCard = (library) => {
 
 submitBtn.addEventListener("click", e => {
     e.preventDefault();
+
     let title = document.querySelector("#title").value;
     let author = document.querySelector("#author").value;
     let pages = document.querySelector("#pages").value;
     let read = document.querySelector("#read").checked;
-
-    addBookToLibrary(title, author, pages, read);
+    
+    let book = new Book(title, author, pages, read)
+    
+    addBookToLibrary(book);
+    createBookCard(book);
 
     document.querySelector("#title").value = null;
     document.querySelector("#author").value = null;
     document.querySelector("#pages").value = null;
     document.querySelector("#read").checked = false;
-
-    insertBookCard(myLibrary);
 
     modal.close();
 })
